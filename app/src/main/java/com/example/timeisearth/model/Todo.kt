@@ -1,4 +1,4 @@
-package com.example.timeisearth.network.model
+package com.example.timeisearth.model
 
 data class Todo(
     var title: String,

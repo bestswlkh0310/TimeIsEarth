@@ -1,9 +1,9 @@
-package com.example.timeisearth.util
+package com.example.timeisearth.viewModel
+import androidx.lifecycle.ViewModel
+import com.example.timeisearth.model.Todo
 
-import com.example.timeisearth.network.model.Todo
-
-object TodoManager {
-    val todoList = arrayListOf<Todo>(
+class MainViewModel: ViewModel() {
+    val todoList = arrayListOf(
         Todo("밥먹기", "밥을 먹을거임", "3"),
         Todo("밥먹기", "밥을 먹을거임", "3"),
         Todo("밥먹기", "밥을 먹을거임", "3"),
