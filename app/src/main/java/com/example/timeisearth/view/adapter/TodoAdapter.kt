@@ -15,12 +15,11 @@ import com.example.timeisearth.util.constant.TAG
 class TodoAdapter(
     private val todoList: MutableList<Todo>,
     ): RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
-    private lateinit var binding: TodoBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        binding = TodoBinding.inflate(inflater, parent, false)
-        return TodoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.todo, parent, false))
+        val binding = TodoBinding.inflate(inflater, parent, false)
+        return TodoViewHolder(binding)
     }
 
     override fun getItemCount() = todoList.size
@@ -30,14 +29,13 @@ class TodoAdapter(
         holder.setTodoTitle(todo.title!!)
         holder.setTodoDeadline(todo.deadline!!)
     }
-    inner class TodoViewHolder(v: View): RecyclerView.ViewHolder(v) {
+    inner class TodoViewHolder(private val binding: TodoBinding): RecyclerView.ViewHolder(binding.root) {
+
         fun setTodoTitle(title: String) {
-            Log.d(TAG, "$title - adapter.setTodoTitle() called")
             binding.cbTitle.text = title
         }
         fun setTodoDeadline(deadline: String) {
-            Log.d(TAG, "$deadline - adapter.setTodoTitle() called")
-            binding.tvDeadline.text = "오류수정!!"
+            binding.tvDeadline.text = deadline
         }
     }
 }

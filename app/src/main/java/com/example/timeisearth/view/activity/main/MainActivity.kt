@@ -13,7 +13,11 @@ import com.example.timeisearth.databinding.ActivityMainBinding
 import com.example.timeisearth.model.entity.Todo
 import com.example.timeisearth.util.constant.TAG
 import com.example.timeisearth.viewModel.MainViewModel
-import java.text.FieldPosition
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity(), TodoListener {
     private val dialog: TodoDialog by lazy { TodoDialog(this, this) }
@@ -24,17 +28,19 @@ class MainActivity : AppCompatActivity(), TodoListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setContentView(binding.root)
-        initTodoRecyclerView()
+        initTodoList()
         binding.fabAddTodo.setOnClickListener { showDialog() }
     }
 
-    private fun initTodoRecyclerView() {
-        val todoList = viewModel.todoList
-        adapter = TodoAdapter(todoList)
+    private fun initTodoList() {
+        adapter = TodoAdapter(viewModel.todoList)
+
         with(binding) {
             rvTodoList.adapter = adapter
             rvTodoList.layoutManager = LinearLayoutManager(this@MainActivity)
         }
+
+        viewModel.initTodoList()
     }
 
     private fun showDialog() {
@@ -44,12 +50,6 @@ class MainActivity : AppCompatActivity(), TodoListener {
 
     override fun notifyNewTodo(todo: Todo) {
         viewModel.insertTodo(todo)
-        if (viewModel.todoList.size > 0) {
-            adapter.notifyItemInserted(viewModel.todoList.size - 1)
-            for (i in viewModel.todoList) {
-                Log.d(TAG, "todo: title - ${i.title} content - ${i.content} - size ${viewModel.todoList.size} notifyNewTodo() called")
-            }
-            Log.d(TAG, "MainActivity - notifyNewTodo() called")
-        }
+        adapter.notifyItemInserted(viewModel.todoList.size - 1)
     }
 }
