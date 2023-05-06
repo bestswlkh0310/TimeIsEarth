@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-@Database(entities = [Todo::class], version = 1)
+@Database(entities = [Todo::class], version = 1, exportSchema = false)
 abstract class TodoDatabase: RoomDatabase() {
     abstract fun todoDAO(): TodoDAO
     companion object {

@@ -2,12 +2,8 @@ package com.example.timeisearth.view.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.timeisearth.R
 import com.example.timeisearth.databinding.TodoBinding
 import com.example.timeisearth.model.entity.Todo
 import com.example.timeisearth.util.constant.TAG

@@ -5,4 +5,9 @@
     <string name="cancel">취소</string>
     <string name="title">title</string>
     <string name="content">content</string>
+    <string name="drawer">drawer</string>
+    <string name="mode">mode</string>
+    <string name="drawer_title">로그인 하십시오</string>
+    <string name="profile">profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>
