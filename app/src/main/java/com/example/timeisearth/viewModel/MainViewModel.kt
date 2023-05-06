@@ -19,6 +19,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     private val db = TodoDatabase.getInstance(application.applicationContext)!!
     private val todoDAO = db.todoDAO()
 
+    var todo: Todo? = null
     fun insertTodo(todo: Todo) {
         todoList.add(todo)
         GlobalScope.launch {

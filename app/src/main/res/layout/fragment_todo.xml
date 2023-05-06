@@ -3,7 +3,7 @@
     <data>
         <variable
             name="vm"
-            type="com.example.timeisearth.viewModel.TodoViewModel" />
+            type="com.example.timeisearth.viewModel.TodoContentViewModel" />
     </data>
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,7 +13,8 @@
         tools:context=".view.fragment.TodoFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#fff">
             <TextView
                 android:id="@+id/title"
                 app:layout_constraintTop_toTopOf="parent"
@@ -38,28 +39,33 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:gravity="center">
                 <Button
-                    android:id="@+id/complete"
+                    android:id="@+id/btn_complete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
+                    android:textSize="20sp"
                     android:text="완료"/>
                 <Button
+                    android:id="@+id/btn_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
+                    android:textSize="20sp"
                     android:text="수정"/>
                 <Button
                     android:id="@+id/btn_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:layout_marginHorizontal="10dp"
                     android:text="삭제"/>
                 <Button
-                    android:id="@+id/back"
+                    android:id="@+id/btn_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:layout_marginHorizontal="10dp"
-                    android:text="뒤로"/>
+                    android:text="뒤"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
