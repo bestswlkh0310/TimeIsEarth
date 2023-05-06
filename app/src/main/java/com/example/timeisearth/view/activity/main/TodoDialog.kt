@@ -1,16 +1,17 @@
-package com.example.timeisearth.view.dialog
+package com.example.timeisearth.view.activity.main
 
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.timeisearth.R
 import com.example.timeisearth.databinding.TodoDialogBinding
-import com.example.timeisearth.model.Todo
-import com.example.timeisearth.viewModel.MainViewModel
+import com.example.timeisearth.model.entity.Todo
+import com.example.timeisearth.util.constant.TAG
 
-class TodoDialog(context: Context): Dialog(context), View.OnClickListener {
+class TodoDialog(context: Context, val todoListener: TodoListener): Dialog(context), View.OnClickListener {
     private lateinit var binding: TodoDialogBinding
     private var title = ""
     private var content = ""
@@ -33,6 +34,8 @@ class TodoDialog(context: Context): Dialog(context), View.OnClickListener {
     }
 
     fun onClickSave() {
+        title = binding.tvTitle.text.toString()
+        content = binding.tvContent.text.toString()
         if (title == "") {
             Toast.makeText(context, "제목을 입력해주세요", Toast.LENGTH_SHORT).show()
         } else if (content == "") {
@@ -43,6 +46,12 @@ class TodoDialog(context: Context): Dialog(context), View.OnClickListener {
                 content = content,
                 deadline = "123"
             )
+            Log.d(TAG, "newTitle - $title newContent - $content - onClickSave() called")
+            with(binding) {
+                tvTitle.setText("")
+                tvContent.setText("")
+            }
+            todoListener.notifyNewTodo(todo)
             dismiss()
         }
     }
@@ -50,4 +59,5 @@ class TodoDialog(context: Context): Dialog(context), View.OnClickListener {
     fun onClickCancel() {
         dismiss()
     }
+
 }
