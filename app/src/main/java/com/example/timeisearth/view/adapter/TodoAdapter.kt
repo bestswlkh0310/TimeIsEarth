@@ -46,7 +46,7 @@ class TodoAdapter(
                 itemClickListener.onTodoItemCheckedChanged(view, todo, isChecked)
             }
             binding.btnDelete.setOnClickListener {itemClickListener.onTodoDeleteClick(todo, position) }
-            binding.btnEdit.setOnClickListener { itemClickListener.onTodoEditClick(todo) }
+            binding.btnEdit.setOnClickListener { itemClickListener.onTodoEditClick(todo, position) }
         }
     }
 }

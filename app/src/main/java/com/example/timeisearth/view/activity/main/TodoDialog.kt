@@ -51,7 +51,7 @@ class TodoDialog(context: Context, private val todoListener: TodoDialogClickList
                 tvTitle.setText("")
                 tvContent.setText("")
             }
-            todoListener.notifyNewTodo(todo)
+            todoListener.onDialogSaveClick(todo)
             dismiss()
         }
     }

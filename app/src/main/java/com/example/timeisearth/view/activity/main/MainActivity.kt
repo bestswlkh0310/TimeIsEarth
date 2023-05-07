@@ -28,7 +28,7 @@ import com.example.timeisearth.viewModel.TodoItemViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(), TodoDialogClickListener, TodoItemClickListener {
+class MainActivity : AppCompatActivity(), TodoDialogClickListener, TodoItemClickListener, TodoEditClickListener {
     private val dialog: TodoDialog by lazy { TodoDialog(this, this) }
     private val viewModel: MainViewModel by viewModels()
     private val todoItemViewModel: TodoItemViewModel by viewModels()
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), TodoDialogClickListener, TodoItemClick
         return true
     }
 
-    override fun notifyNewTodo(todo: Todo) {
+    override fun onDialogSaveClick(todo: Todo) {
         viewModel.insertTodo(todo)
         adapter.notifyItemInserted(viewModel.todoList.size - 1)
     }
@@ -127,9 +127,10 @@ class MainActivity : AppCompatActivity(), TodoDialogClickListener, TodoItemClick
         adapter.notifyDataSetChanged()
     }
 
-    override fun onTodoEditClick(todo: Todo) {
+    override fun onTodoEditClick(todo: Todo, position: Int) {
         viewModel.todo = todo
         Log.d(TAG, "title - ${todo.title} content - ${todo.content} - onItemClick() called")
+        viewModel.editedTodoPosition = position
         replaceFragment(TodoFragment())
 //        supportFragmentManager
 //            .beginTransaction()
@@ -142,5 +143,13 @@ class MainActivity : AppCompatActivity(), TodoDialogClickListener, TodoItemClick
             .beginTransaction()
             .replace(R.id.fragment_container, fragment as Fragment)
             .commitNow()
+    }
+
+    override fun onEditSaveClick() {
+        if (viewModel.editedTodoPosition != null) {
+            adapter.notifyItemChanged(viewModel.editedTodoPosition!!)
+        } else {
+            Log.d(TAG, "MainActivity - onEditSaveClick() called")
+        }
     }
 }

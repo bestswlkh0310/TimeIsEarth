@@ -11,10 +11,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
-    val todoList: MutableList<Todo> = arrayListOf()
     private val db = TodoDatabase.getInstance(application.applicationContext)!!
-    val todoDAO = db.todoDAO()
+    private val todoDAO = db.todoDAO()
     private val todoRepository = TodoRepository(todoDAO)
+
+    val todoList: MutableList<Todo> = arrayListOf()
+    var editedTodoPosition: Int? = null
 
     var todo: Todo? = null
     fun insertTodo(todo: Todo) {
@@ -31,8 +33,9 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         todoList.removeAt(position)
     }
 
-    fun updateTodo(position: Int, todo: Todo) {
-        todoList[position] = todo
+    fun updateTodo(todo: Todo) {
+        Log.d(TAG, "$todo - updateTodo() called")
+        todoList[todoList.indexOf(todo)] = todo
         viewModelScope.launch(Dispatchers.IO) {
             todoRepository.updateTodo(todo)
         }
