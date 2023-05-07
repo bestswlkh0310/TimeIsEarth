@@ -46,13 +46,6 @@
                     android:textSize="20sp"
                     android:text="완료"/>
                 <Button
-                    android:id="@+id/btn_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:textSize="20sp"
-                    android:text="수정"/>
-                <Button
                     android:id="@+id/btn_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -65,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:layout_marginHorizontal="10dp"
-                    android:text="뒤"/>
+                    android:text="취소"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

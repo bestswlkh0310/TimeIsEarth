@@ -11,7 +11,7 @@ import com.example.timeisearth.databinding.TodoDialogBinding
 import com.example.timeisearth.model.entity.Todo
 import com.example.timeisearth.util.constant.TAG
 
-class TodoDialog(context: Context, private val todoListener: TodoListener): Dialog(context), View.OnClickListener {
+class TodoDialog(context: Context, private val todoListener: TodoDialogClickListener): Dialog(context), View.OnClickListener {
     private lateinit var binding: TodoDialogBinding
     private var title = ""
     private var content = ""

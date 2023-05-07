@@ -44,10 +44,6 @@ class TodoFragment : Fragment() {
 
             }
 
-            btnEdit.setOnClickListener {
-
-            }
-
             btnDelete.setOnClickListener {
 
             }

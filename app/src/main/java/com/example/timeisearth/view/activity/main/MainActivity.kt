@@ -1,16 +1,20 @@
 package com.example.timeisearth.view.activity.main
 
+import android.graphics.Color
+import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.commit
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.timeisearth.R
@@ -21,8 +25,10 @@ import com.example.timeisearth.util.constant.TAG
 import com.example.timeisearth.view.fragment.TodoFragment
 import com.example.timeisearth.viewModel.MainViewModel
 import com.example.timeisearth.viewModel.TodoItemViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(), TodoListener, TodoItemClickListener {
+class MainActivity : AppCompatActivity(), TodoDialogClickListener, TodoItemClickListener {
     private val dialog: TodoDialog by lazy { TodoDialog(this, this) }
     private val viewModel: MainViewModel by viewModels()
     private val todoItemViewModel: TodoItemViewModel by viewModels()
@@ -33,18 +39,11 @@ class MainActivity : AppCompatActivity(), TodoListener, TodoItemClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setContentView(binding.root)
-        
+
         Log.d(TAG, "MainActivity - onCreate() called")
-        
+
         initTodoList()
         initToolBar()
-        todoItemViewModel.isChecked.observe(this) {
-            if (it) {
-                Log.d(TAG, "true - onCreate() called")
-            } else {
-                Log.d(TAG, "false - onCreate() called")
-            }
-        }
         binding.fabAddTodo.setOnClickListener { showDialog() }
     }
 
@@ -54,9 +53,15 @@ class MainActivity : AppCompatActivity(), TodoListener, TodoItemClickListener {
         with(binding) {
             rvTodoList.adapter = adapter
             rvTodoList.layoutManager = LinearLayoutManager(this@MainActivity)
-            rvTodoList.addItemDecoration(DividerItemDecoration(applicationContext, LinearLayout.VERTICAL))
+            rvTodoList.addItemDecoration(
+                DividerItemDecoration(
+                    applicationContext,
+                    LinearLayout.VERTICAL
+                )
+            )
         }
         viewModel.initTodoList()
+        adapter.notifyItemRangeInserted(0, viewModel.todoList.size)
     }
 
     private fun showDialog() {
@@ -83,34 +88,59 @@ class MainActivity : AppCompatActivity(), TodoListener, TodoItemClickListener {
                 changeDarkMode()
                 true
             }
+
             android.R.id.home -> {
                 Log.d(TAG, "MainActivity - onOptionsItemSelected() called")
                 binding.drawer.openDrawer(GravityCompat.START)
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.tool_bar, menu)
         return true
     }
+
     override fun notifyNewTodo(todo: Todo) {
         viewModel.insertTodo(todo)
         adapter.notifyItemInserted(viewModel.todoList.size - 1)
     }
 
-    override fun onItemClick(todo: Todo) {
-        viewModel.todo = todo
-        Log.d(TAG, "title - ${todo.title} content - ${todo.content} - onItemClick() called")
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, TodoFragment())
-            .commitNow()
+    override fun onTodoItemCheckedChanged(view: CompoundButton, todo: Todo, isChecked: Boolean) {
+        Log.d(TAG, "title - ${todo.title} - check - $isChecked onTodoItemCheckedChanged() called")
+
+        if (isChecked) {
+            view.setBackgroundColor(0xFFCCCCCC.toInt())
+            view.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        } else {
+            view.setBackgroundColor(Color.WHITE)
+            view.paintFlags = 1283
+        }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
+    override fun onTodoDeleteClick(todo: Todo, position: Int) {
+        Log.d(TAG, "${todo.id} - ${todo.title} : ${todo.content} [$position] - onTodoDeleteClick() called")
+        viewModel.deleteTodo(todo, position)
+        adapter.notifyDataSetChanged()
+    }
 
+    override fun onTodoEditClick(todo: Todo) {
+        viewModel.todo = todo
+        Log.d(TAG, "title - ${todo.title} content - ${todo.content} - onItemClick() called")
+        replaceFragment(TodoFragment())
+//        supportFragmentManager
+//            .beginTransaction()
+//            .replace(R.id.fragment_container, TodoFragment())
+//            .commitNow()
+    }
+
+    private fun <T> replaceFragment(fragment: T) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment as Fragment)
+            .commitNow()
     }
 }

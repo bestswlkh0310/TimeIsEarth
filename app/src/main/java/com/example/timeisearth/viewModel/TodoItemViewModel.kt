@@ -4,5 +4,5 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class TodoItemViewModel: ViewModel() {
-    val isChecked = MutableLiveData<Boolean>()
+//    val isChecked = MutableLiveData<Boolean>()
 }
