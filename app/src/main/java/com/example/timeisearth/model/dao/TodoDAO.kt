@@ -21,5 +21,4 @@ interface TodoDAO {
 
     @Query("SELECT * FROM todo")
     fun getAllTodo(): List<Todo>
-
 }

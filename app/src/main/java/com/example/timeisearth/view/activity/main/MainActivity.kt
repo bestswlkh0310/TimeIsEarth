@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity(), TodoDialogClickListener, TodoItemClick
 
         Log.d(TAG, "MainActivity - onCreate() called")
 
+        
+
         initTodoList()
         initToolBar()
         binding.fabAddTodo.setOnClickListener { showDialog() }
@@ -110,7 +112,7 @@ class MainActivity : AppCompatActivity(), TodoDialogClickListener, TodoItemClick
     }
 
     override fun onTodoItemCheckedChanged(view: CompoundButton, todo: Todo, isChecked: Boolean) {
-        Log.d(TAG, "title - ${todo.title} - check - $isChecked onTodoItemCheckedChanged() called")
+        Log.d(TAG, "title - ${todo.title} : checked: $isChecked onTodoItemCheckedChanged() called")
 
         if (isChecked) {
             view.setBackgroundColor(0xFFCCCCCC.toInt())
@@ -122,20 +124,16 @@ class MainActivity : AppCompatActivity(), TodoDialogClickListener, TodoItemClick
     }
 
     override fun onTodoDeleteClick(todo: Todo, position: Int) {
-        Log.d(TAG, "${todo.id} - ${todo.title} : ${todo.content} [$position] - onTodoDeleteClick() called")
+        Log.d(TAG, "[$position] $todo - onTodoDeleteClick() called")
         viewModel.deleteTodo(todo, position)
         adapter.notifyDataSetChanged()
     }
 
     override fun onTodoEditClick(todo: Todo, position: Int) {
         viewModel.todo = todo
-        Log.d(TAG, "title - ${todo.title} content - ${todo.content} - onItemClick() called")
+        Log.d(TAG, "$todo - onItemClick() called")
         viewModel.editedTodoPosition = position
         replaceFragment(TodoFragment())
-//        supportFragmentManager
-//            .beginTransaction()
-//            .replace(R.id.fragment_container, TodoFragment())
-//            .commitNow()
     }
 
     private fun <T> replaceFragment(fragment: T) {
