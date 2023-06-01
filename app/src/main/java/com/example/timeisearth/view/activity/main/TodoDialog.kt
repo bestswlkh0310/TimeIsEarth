@@ -61,3 +61,7 @@ class TodoDialog(context: Context, private val todoListener: TodoDialogClickList
     }
 
 }
+
+interface TodoDialogClickListener {
+    fun onDialogSaveClick(todo: Todo)
+}
